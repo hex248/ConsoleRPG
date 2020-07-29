@@ -25,38 +25,37 @@ namespace ConsoleRPG
         {
             name = pname;
             style = pstyle;
-
-            if (style == "Mage")
+            switch (pstyle)
             {
-                health = 90;
-                attack = 140;
-                defence = 70;
-                speed = 80;
-                balance = 100;
-                critchance = 10;
-                evaschance = 10;
-            }
+                case "Mage":
+                    health = 90;
+                    attack = 140;
+                    defence = 70;
+                    speed = 80;
+                    balance = 100;
+                    critchance = 10;
+                    evaschance = 10;
+                    break;
 
-            if (style == "Hunter")
-            {
-                health = 130;
-                attack = 120;
-                defence = 80;
-                speed = 110;
-                balance = 100;
-                critchance = 20;
-                evaschance = 10;
-            }
+                case "Hunter":
+                    health = 130;
+                    attack = 120;
+                    defence = 80;
+                    speed = 110;
+                    balance = 100;
+                    critchance = 20;
+                    evaschance = 10;
+                    break;
 
-            if (style == "Rogue")
-            {
-                health = 60;
-                attack = 145;
-                defence = 60;
-                speed = 150;
-                balance = 100;
-                critchance = 35;
-                evaschance = 20;
+                case "Rogue":
+                    health = 60;
+                    attack = 145;
+                    defence = 60;
+                    speed = 150;
+                    balance = 100;
+                    critchance = 35;
+                    evaschance = 20;
+                    break;
             }
         }
     }
@@ -89,6 +88,7 @@ namespace ConsoleRPG
     }
     class Program
     {
+        
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to console RPG!\n\n");
@@ -96,13 +96,13 @@ namespace ConsoleRPG
             Console.WriteLine("Hello! I am game-master Jerry! Nice to meet you... uh, what should I call you?\n");
             string uname = Console.ReadLine();
 
-
+            bool home = false;
 
             Console.WriteLine("\nIn this world, there are many dangers. How will you fight?\n");
 
             Console.WriteLine("Please choose your fighting style:\n");
 
-            Console.WriteLine("1. Mage \n2. Hunter \n3. Rogue \n\nType 'choose' followed by the number corresponding to the style you would like to choose.\nEnter the number corresponding to the style to find out more\n");
+            Console.WriteLine("1. Mage \n2. Hunter \n3. Rogue \n\nType 'choose' followed by the number corresponding to the style you would like to choose.\nEnter just the number corresponding to the style to find out more.\n");
 
             string tempinput = Console.ReadLine();
 
@@ -245,12 +245,46 @@ namespace ConsoleRPG
             Console.WriteLine($" | Critical Hit Chance: {user.critchance}%");
             Console.WriteLine($" | Attack Evasion Chance: {user.evaschance}%");
 
+            home = true;
 
-            while (true)
+            string userInput = Console.ReadLine();
+
+            while (home)
             {
-                // command area
-            }
+                if (userInput == "help")
+                {
+                    Console.WriteLine("List of commands:\n\n" +
+                        "help - shows this list\n" +
+                        "stats - shows the current player's stats\n" +
+                        "play - starts the game\n");
+                }
 
+                else if (userInput == "stats")
+                {
+                    Console.WriteLine($"\n\n | {user.name}'s Stats");
+                    Console.WriteLine($" | Style: {user.style}");
+                    Console.WriteLine($" | Health: {user.health}");
+                    Console.WriteLine($" | Attack: {user.attack}");
+                    Console.WriteLine($" | Defence: {user.defence}");
+                    Console.WriteLine($" | Speed: {user.speed}");
+                    Console.WriteLine($" | Balance: ${user.balance}");
+                    Console.WriteLine($" | Critical Hit Chance: {user.critchance}%");
+                    Console.WriteLine($" | Attack Evasion Chance: {user.evaschance}%\n");
+                }
+
+                else if (userInput == "play")
+                {
+                    Console.WriteLine("This feature does not yet work!");
+                    // home = false;
+                }
+
+                else
+                {
+                    Console.WriteLine($"{userInput} is an unknown command.");
+                }
+                userInput = Console.ReadLine();
+
+            }
 
 
 
