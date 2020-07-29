@@ -1,0 +1,7 @@
+D:\Programming\CS\ConsoleRPG\ConsoleRPG\ConsoleRPG\bin\Debug\ConsoleRPG.exe.config
+D:\Programming\CS\ConsoleRPG\ConsoleRPG\ConsoleRPG\bin\Debug\ConsoleRPG.exe
+D:\Programming\CS\ConsoleRPG\ConsoleRPG\ConsoleRPG\bin\Debug\ConsoleRPG.pdb
+D:\Programming\CS\ConsoleRPG\ConsoleRPG\ConsoleRPG\obj\Debug\ConsoleRPG.csprojAssemblyReference.cache
+D:\Programming\CS\ConsoleRPG\ConsoleRPG\ConsoleRPG\obj\Debug\ConsoleRPG.csproj.CoreCompileInputs.cache
+D:\Programming\CS\ConsoleRPG\ConsoleRPG\ConsoleRPG\obj\Debug\ConsoleRPG.exe
+D:\Programming\CS\ConsoleRPG\ConsoleRPG\ConsoleRPG\obj\Debug\ConsoleRPG.pdb
