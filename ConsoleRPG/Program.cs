@@ -18,8 +18,8 @@ namespace ConsoleRPG
         public int currentXp;
         public int health;
         public int attack;
-        public int defence;
         public int speed;
+        public string[] moveset = new string[5];
         public int balance;
         public int critchance;
         public int evaschance;
@@ -36,8 +36,12 @@ namespace ConsoleRPG
                     currentXp = 0;
                     health = 90;
                     attack = 140;
-                    defence = 70;
                     speed = 80;
+                    moveset[0] = "None";
+                    moveset[1] = "None";
+                    moveset[2] = "None";
+                    moveset[3] = "None";
+                    moveset[4] = "Run";
                     balance = 100;
                     critchance = 10;
                     evaschance = 10;
@@ -49,8 +53,12 @@ namespace ConsoleRPG
                     currentXp = 0;
                     health = 130;
                     attack = 120;
-                    defence = 80;
                     speed = 110;
+                    moveset[0] = "None";
+                    moveset[1] = "None";
+                    moveset[2] = "None";
+                    moveset[3] = "None";
+                    moveset[4] = "Run";
                     balance = 100;
                     critchance = 20;
                     evaschance = 10;
@@ -62,19 +70,28 @@ namespace ConsoleRPG
                     currentXp = 0;
                     health = 60;
                     attack = 145;
-                    defence = 60;
                     speed = 150;
+                    moveset[0] = "Punch";
+                    moveset[1] = "None";
+                    moveset[2] = "None";
+                    moveset[3] = "None";
+                    moveset[4] = "Run";
                     balance = 100;
                     critchance = 35;
                     evaschance = 20;
                     break;
+
                 case "Admin":
-                    level = 100000;
+                    level = 1;
                     targetXp = 999999;
                     health = 1000000;
                     attack = 1000000;
-                    defence = 1000000;
                     speed = 1000000;
+                    moveset[0] = "None";
+                    moveset[1] = "None";
+                    moveset[2] = "None";
+                    moveset[3] = "None";
+                    moveset[4] = "Fly";
                     balance = 1000000;
                     critchance = 100;
                     evaschance = 100;
@@ -82,31 +99,59 @@ namespace ConsoleRPG
             }
         }
     }
-    class Monster
+    class Enemy
     {
         public string name;
         public string app; // app = Appearance
         public int health;
         public int attack;
-        public int defence;
         public int speed;
-
-        public Monster(string mname, string mapp, int mhealth, int mattack, int mdefence, int mspeed)
+        public string[,] enemynames =
         {
-            name = mname;
-            app = mapp;
-            health = mhealth;
-            attack = mattack;
-            defence = mdefence;
-            speed = mspeed;
-            // Console.WriteLine($"Oh no! \nThere is a {app} {name} who has {health} health, {defence} defence and {speed} speed!");
-            Console.WriteLine("A monster has appeared!\nHere is some information about it:\n\n");
-            Console.WriteLine($"--{name}--\n\n" +
-                $"Appearance: {app}\n" +
-                $"Health: {health}\n" +
-                $"Attack: {attack}\n" +
-                $"Defence: {defence}\n" +
-                $"Speed: {speed}\n");
+            {"Gremlin", "Goblin"},
+            {"Orc", "Griffin" }
+        };
+        public string[,] enemyapps =
+        {
+            {"Red, small", "Blue, ambidextrous" },
+            {"Red, moderately large", "Blue, wise" }
+        };
+        public string[,] moveset =
+        {
+            {"Scratch", "Small Heal"},
+            {"Punch", "Small Heal"}
+        };
+        public Enemy(int plevel)
+        {
+            Random rnd = new Random();
+            name = enemynames[plevel - 1, rnd.Next(0, 2)];
+            app = enemyapps[plevel - 1, rnd.Next(0, 2)];
+
+            switch (name)
+            {
+                case "Gremlin":
+                    health = 60;
+                    attack = 70;
+                    speed = 50;
+                    return;
+                case "Goblin":
+                    health = 70;
+                    attack = 60;
+                    speed = 80;
+                    return;
+                case "Orc":
+                    health = 120;
+                    attack = 90;
+                    speed = 20;
+                    return;
+                case "Griffin":
+                    health = 60;
+                    attack = 60;
+                    speed = 100;
+                    return;
+            }
+
+            
         }
     }
     class Program
@@ -186,7 +231,7 @@ namespace ConsoleRPG
                 else if (tempinput == "choose 1")
                 {
                     Console.Write("\nSo you would like to be a Mage?");
-                    Console.Write("\nYes(y) / No(n)");
+                    Console.Write("\nYes(y) / No(n)\n");
                     confirmation = Console.ReadLine();
                     if (confirmation == "y")
                     {
@@ -206,7 +251,7 @@ namespace ConsoleRPG
                 else if (tempinput == "choose 2")
                 {
                     Console.Write("\nSo you would like to be a Hunter?");
-                    Console.Write("\nYes(y) / No(n)");
+                    Console.Write("\nYes(y) / No(n)\n");
                     confirmation = Console.ReadLine();
                     if (confirmation == "y")
                     {
@@ -226,7 +271,7 @@ namespace ConsoleRPG
                 else if (tempinput == "choose 3")
                 {
                     Console.Write("\nSo you would like to be a Rogue?");
-                    Console.Write("\nYes(y) / No(n)");
+                    Console.Write("\nYes(y) / No(n)\n");
                     confirmation = Console.ReadLine();
                     if (confirmation == "y")
                     {
@@ -263,16 +308,24 @@ namespace ConsoleRPG
 
             Console.WriteLine($"\n\nYou are a {user.style} named {user.name}.");
             Console.WriteLine($"\n\n | {user.name}'s Stats");
+            System.Threading.Thread.Sleep(70);
             Console.WriteLine($" | Style: {user.style}");
+            System.Threading.Thread.Sleep(70);
             Console.WriteLine($" | Level: {user.level}");
+            System.Threading.Thread.Sleep(70);
             Console.WriteLine($" | XP: {user.currentXp}/{user.targetXp}");
+            System.Threading.Thread.Sleep(70);
             Console.WriteLine($" | Health: {user.health}");
+            System.Threading.Thread.Sleep(70);
             Console.WriteLine($" | Attack: {user.attack}");
-            Console.WriteLine($" | Defence: {user.defence}");
+            System.Threading.Thread.Sleep(70);
             Console.WriteLine($" | Speed: {user.speed}");
+            System.Threading.Thread.Sleep(70);
             Console.WriteLine($" | Balance: ${user.balance}");
+            System.Threading.Thread.Sleep(70);
             Console.WriteLine($" | Critical Hit Chance: {user.critchance}%");
-            Console.WriteLine($" | Attack Evasion Chance: {user.evaschance}%");
+            System.Threading.Thread.Sleep(70);
+            Console.WriteLine($" | Attack Evasion Chance: {user.evaschance}%\n");
 
             home = true;
 
@@ -291,22 +344,30 @@ namespace ConsoleRPG
                 else if (userInput == "stats")
                 {
                     Console.WriteLine($"\n\n | {user.name}'s Stats");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($" | Style: {user.style}");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($" | Level: {user.level}");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($" | XP: {user.currentXp}/{user.targetXp}");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($" | Health: {user.health}");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($" | Attack: {user.attack}");
-                    Console.WriteLine($" | Defence: {user.defence}");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($" | Speed: {user.speed}");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($" | Balance: ${user.balance}");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($" | Critical Hit Chance: {user.critchance}%");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($" | Attack Evasion Chance: {user.evaschance}%\n");
                 }
 
                 else if (userInput == "play")
                 {
-                    Console.WriteLine("Starting game... ");
-
+                    home = false;
+                    play();
                 }
 
                 else
@@ -326,19 +387,120 @@ namespace ConsoleRPG
                     user.level++;
                     user.targetXp += user.targetXp / 10;
                     Console.Write("LEVEL UP!");
-                    Console.Write($"\nYou are now level {user.level}!");
+                    Console.Write($"\nYou are now level {user.level}!\n");
                 }
+            }
+
+            void play()
+            {
+                Console.WriteLine("\nStarting game... ");
+                Enemy enemy = new Enemy(user.level);
+                System.Threading.Thread.Sleep(500);
+                Console.WriteLine("\nAn enemy has appeared!\n");
+                System.Threading.Thread.Sleep(500);
+                Console.WriteLine("Here is some information about it:\n");
+                System.Threading.Thread.Sleep(200);
+                Console.WriteLine($" | Name: {enemy.name}");
+                Console.WriteLine($" | Appearance: {enemy.app}");
+                Console.WriteLine($" | Health: {enemy.health}");
+                Console.WriteLine($" | Attack: {enemy.attack}");
+                Console.WriteLine($" | Speed: {enemy.speed}");
+
+                int phealth = user.health;
+                int eohealth = enemy.health;
+                int xpGained;
+
+                while (phealth > 0 && enemy.health > 0)
+                {
+                    Console.WriteLine($"\nWhat will you do?");
+                    Console.WriteLine($"Your Moves:\n");
+                    Console.WriteLine($"{user.moveset[0]}");
+                    Console.WriteLine($"{user.moveset[1]}");
+                    Console.WriteLine($"{user.moveset[2]}");
+                    Console.WriteLine($"{user.moveset[3]}");
+                    Console.WriteLine($"{user.moveset[4]}\n");
+                    string move = Console.ReadLine();
+
+                    switch (move)
+                    {
+                        case "Punch": case "punch":
+                            if (user.speed >= enemy.speed)
+                            {
+                                Random rnd = new Random();
+                                enemy.health -= user.attack / 4;
+                                Console.WriteLine($"Your {move} did {user.attack / 4} damage! The {enemy.name} now has {enemy.health} health.");
+                                if (enemy.health > 0)
+                                {
+                                    string enemymove = enemy.moveset[user.level - 1, rnd.Next(0, 2)];
+                                    switch (enemymove)
+                                    {
+                                        case "Scratch":
+                                            phealth -= enemy.attack / 5;
+                                            Console.WriteLine($"The {enemy.name} used {enemymove}, dealing {enemy.attack / 5} damage! You now have {phealth} health.");
+                                            break;
+                                        case "Small Heal":
+                                            int healthchange = enemy.health / 5;
+                                            enemy.health += healthchange;
+                                            Console.WriteLine($"The {enemy.name} used {enemymove}, healing by {healthchange}. They now have {enemy.health} health.");
+                                            break;
+                                    }
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"Congratulations! You beat the {enemy.name}!");
+                                    xpGained = eohealth / 3;
+                                    Console.WriteLine($"You gained {xpGained} XP!");
+                                    addXp(xpGained);
+                                }
+                                if (phealth <= 0)
+                                {
+                                    Console.WriteLine($"You Died! Returning home...");
+                                }
+                            }
+                            else
+                            {
+                                Random rnd = new Random();
+                                string enemymove = enemy.moveset[user.level - 1, rnd.Next(0, 2)];
+                                switch (enemymove)
+                                {
+                                    case "Scratch":
+                                        phealth -= enemy.attack / 5;
+                                        Console.WriteLine($"The {enemy.name} used {enemymove}, dealing {enemy.attack / 5} damage! You now have {phealth} health.");
+                                        break;
+                                    case "Small Heal":
+                                        int healthchange = enemy.health / 5;
+                                        enemy.health += healthchange;
+                                        Console.WriteLine($"The {enemy.name} used {enemymove}, healing by {healthchange}. They now have {enemy.health} health.");
+                                        break;
+                                }
+                                if (phealth <= 0)
+                                {
+                                    Console.WriteLine($"You Died! Returning home...");
+                                }
+                                else
+                                {
+                                    enemy.health -= user.attack / 4;
+                                    Console.WriteLine($"Your {move} did {user.attack / 4} damage! The {enemy.name} now has {enemy.health} health.");
+                                    phealth -= 10;
+                                }
+                                if (enemy.health <= 0)
+                                {
+                                    Console.WriteLine($"Congratulations! You beat the {enemy.name}!");
+                                    xpGained = eohealth / 3;
+                                    Console.WriteLine($"You gained {xpGained} XP!");
+                                    addXp(xpGained);
+                                }
+                            }
+                            break;
+                    }
+                }
+                enemy = null;
+                home = true;
             }
 
 
 
 
-
-
-
-
-
-            // Monster monster = new Monster("Beta Gremlin", "Big, blue and disc-shaped", 150, 80 80, 400); // Creates a monster
 
             while (Console.ReadKey().Key != ConsoleKey.Escape) ; // Closes the application on Escape key pressed
         }
