@@ -13,6 +13,9 @@ namespace ConsoleRPG
     {
         public string name;
         public string style;
+        public int level;
+        public int targetXp;
+        public int currentXp;
         public int health;
         public int attack;
         public int defence;
@@ -28,6 +31,9 @@ namespace ConsoleRPG
             switch (pstyle)
             {
                 case "Mage":
+                    level = 1;
+                    targetXp = 100;
+                    currentXp = 0;
                     health = 90;
                     attack = 140;
                     defence = 70;
@@ -38,6 +44,9 @@ namespace ConsoleRPG
                     break;
 
                 case "Hunter":
+                    level = 1;
+                    targetXp = 100;
+                    currentXp = 0;
                     health = 130;
                     attack = 120;
                     defence = 80;
@@ -48,6 +57,9 @@ namespace ConsoleRPG
                     break;
 
                 case "Rogue":
+                    level = 1;
+                    targetXp = 100;
+                    currentXp = 0;
                     health = 60;
                     attack = 145;
                     defence = 60;
@@ -55,6 +67,17 @@ namespace ConsoleRPG
                     balance = 100;
                     critchance = 35;
                     evaschance = 20;
+                    break;
+                case "Admin":
+                    level = 100000;
+                    targetXp = 999999;
+                    health = 1000000;
+                    attack = 1000000;
+                    defence = 1000000;
+                    speed = 1000000;
+                    balance = 1000000;
+                    critchance = 100;
+                    evaschance = 100;
                     break;
             }
         }
@@ -220,6 +243,10 @@ namespace ConsoleRPG
                         tempinput = Console.ReadLine();
                     }
                 }
+                else if (tempinput == "Admin")
+                {
+                    ustyle = "Admin";
+                }
                 else
                 {
                     Console.WriteLine("\nIn this world, there are many dangers. How will you fight?\n");
@@ -237,6 +264,8 @@ namespace ConsoleRPG
             Console.WriteLine($"\n\nYou are a {user.style} named {user.name}.");
             Console.WriteLine($"\n\n | {user.name}'s Stats");
             Console.WriteLine($" | Style: {user.style}");
+            Console.WriteLine($" | Level: {user.level}");
+            Console.WriteLine($" | XP: {user.currentXp}/{user.targetXp}");
             Console.WriteLine($" | Health: {user.health}");
             Console.WriteLine($" | Attack: {user.attack}");
             Console.WriteLine($" | Defence: {user.defence}");
@@ -263,6 +292,8 @@ namespace ConsoleRPG
                 {
                     Console.WriteLine($"\n\n | {user.name}'s Stats");
                     Console.WriteLine($" | Style: {user.style}");
+                    Console.WriteLine($" | Level: {user.level}");
+                    Console.WriteLine($" | XP: {user.currentXp}/{user.targetXp}");
                     Console.WriteLine($" | Health: {user.health}");
                     Console.WriteLine($" | Attack: {user.attack}");
                     Console.WriteLine($" | Defence: {user.defence}");
@@ -274,8 +305,8 @@ namespace ConsoleRPG
 
                 else if (userInput == "play")
                 {
-                    Console.WriteLine("This feature does not yet work!");
-                    // home = false;
+                    Console.WriteLine("Starting game... ");
+
                 }
 
                 else
@@ -286,7 +317,18 @@ namespace ConsoleRPG
 
             }
 
-
+            void addXp(int amount)
+            {
+                user.currentXp += amount;
+                if (user.currentXp >= user.targetXp)
+                {
+                    user.currentXp -= user.targetXp;
+                    user.level++;
+                    user.targetXp += user.targetXp / 10;
+                    Console.Write("LEVEL UP!");
+                    Console.Write($"\nYou are now level {user.level}!");
+                }
+            }
 
 
 
@@ -298,9 +340,7 @@ namespace ConsoleRPG
 
             // Monster monster = new Monster("Beta Gremlin", "Big, blue and disc-shaped", 150, 80 80, 400); // Creates a monster
 
-#pragma warning disable CS0162 // Unreachable code detected
             while (Console.ReadKey().Key != ConsoleKey.Escape) ; // Closes the application on Escape key pressed
-#pragma warning restore CS0162 // Unreachable code detected
         }
     }
 }

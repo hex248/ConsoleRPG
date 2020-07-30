@@ -12,3 +12,6 @@ D:\Programming\CS\ConsoleRPG\ConsoleRPG\obj\Debug\ConsoleRPG.csprojAssemblyRefer
 D:\Programming\CS\ConsoleRPG\ConsoleRPG\obj\Debug\ConsoleRPG.csproj.CoreCompileInputs.cache
 D:\Programming\CS\ConsoleRPG\ConsoleRPG\obj\Debug\ConsoleRPG.exe
 D:\Programming\CS\ConsoleRPG\ConsoleRPG\obj\Debug\ConsoleRPG.pdb
+D:\Programming\CS\ConsoleRPG\ConsoleRPG\bin\Debug\Newtonsoft.Json.dll
+D:\Programming\CS\ConsoleRPG\ConsoleRPG\bin\Debug\Newtonsoft.Json.xml
+D:\Programming\CS\ConsoleRPG\ConsoleRPG\obj\Debug\ConsoleRPG.csproj.CopyComplete
