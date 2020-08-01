@@ -158,6 +158,7 @@ namespace ConsoleRPG
     class Shop
     {
         public string[] moves = new string[5];
+        public int[] movesprice = new int[5];
 
         public Shop(int ulevel, string[] moveset)
         {
@@ -167,6 +168,7 @@ namespace ConsoleRPG
                     if(!moveset.Contains("Kick"))
                     {
                         moves[0] = "Kick";
+                        movesprice[0] = 10;
                     }
                     else
                     {
@@ -175,6 +177,7 @@ namespace ConsoleRPG
                     if (!moveset.Contains("Push"))
                     {
                         moves[1] = "Push";
+                        movesprice[1] = 10;
                     }
                     else
                     {
@@ -183,6 +186,7 @@ namespace ConsoleRPG
                     if (!moveset.Contains("Small Heal"))
                     {
                         moves[2] = "Small Heal";
+                        movesprice[2] = 10;
                     }
                     else
                     {
@@ -191,20 +195,14 @@ namespace ConsoleRPG
                     if (!moveset.Contains("Attack Boost"))
                     {
                         moves[3] = "Attack Boost";
+                        movesprice[3] = 10;
                     }
                     else
                     {
                         moves[3] = "Attack Boost (Already using)";
                     }
-                    if (!moveset.Contains("Fly"))
-                    {
-                        moves[4] = "Fly";
-                    }
-                    else
-                    {
-                        moves[4] = "Fly (Already using)";
-                    }
                     break;
+                
             }
         }
     }
@@ -803,16 +801,16 @@ namespace ConsoleRPG
 
             void shop()
             {
-                Console.WriteLine($"\nWelcome to the shop {user.name}.");
-                Shop playershop = new Shop(user.level, user.moveset);
+                Console.WriteLine($"\nWelcome to the shop, {user.name}.");
 
                 while (!home)
                 {
-                    Console.WriteLine($" | Products:");
-                    Console.WriteLine($" | 1. {playershop.moves[0]}");
-                    Console.WriteLine($" | 2. {playershop.moves[1]}");
-                    Console.WriteLine($" | 3. {playershop.moves[2]}");
-                    Console.WriteLine($" | 4. {playershop.moves[3]}");
+                    Shop playershop = new Shop(user.level, user.moveset);
+                    Console.WriteLine($"\nProducts:");
+                    Console.WriteLine($" | 1. {playershop.moves[0]} - ${playershop.movesprice[0]}");
+                    Console.WriteLine($" | 2. {playershop.moves[1]} - ${playershop.movesprice[1]}");
+                    Console.WriteLine($" | 3. {playershop.moves[2]} - ${playershop.movesprice[2]}");
+                    Console.WriteLine($" | 4. {playershop.moves[3]} - ${playershop.movesprice[3]}");
 
                     string shopinput = Console.ReadLine();
 
@@ -820,6 +818,35 @@ namespace ConsoleRPG
                     {
                         case "close":
                             home = true;
+                            break;
+                        case "buy":
+                            Console.WriteLine($"\nEnter the number of the move you would like to buy.");
+                            int buyinput = System.Convert.ToInt32(Console.ReadLine());
+
+                            if (user.balance >= playershop.movesprice[buyinput - 1])
+                            {
+                                Console.WriteLine($"\nHere are your current moves:");
+                                Console.WriteLine($" | 1. {user.moveset[0]}");
+                                Console.WriteLine($" | 2. {user.moveset[1]}");
+                                Console.WriteLine($" | 3. {user.moveset[2]}");
+                                Console.WriteLine($" | 4. {user.moveset[3]}");
+                                Console.WriteLine($"\nEnter the number of the move you would like to replace with {playershop.moves[buyinput - 1]}.");
+                                int buyreplaceinput = System.Convert.ToInt32(Console.ReadLine());
+
+                                Console.WriteLine($"\nYou replaced {user.moveset[buyreplaceinput - 1]} with {playershop.moves[buyinput - 1]}.");
+                                user.moveset[buyreplaceinput - 1] = playershop.moves[buyinput - 1];
+                                Console.WriteLine($"\nHere are your new moves:\n");
+                                Console.WriteLine($" | 1. {user.moveset[0]}");
+                                Console.WriteLine($" | 2. {user.moveset[1]}");
+                                Console.WriteLine($" | 3. {user.moveset[2]}");
+                                Console.WriteLine($" | 4. {user.moveset[3]}");
+                                System.Threading.Thread.Sleep(800);
+                            }
+                            else
+                            {
+                                Console.WriteLine($"You can't afford {playershop.moves[buyinput - 1]}, you need ${user.balance - playershop.movesprice[buyinput - 1]} more.");
+                                System.Threading.Thread.Sleep(800);
+                            }
                             break;
                     }
                 }
