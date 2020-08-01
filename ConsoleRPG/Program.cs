@@ -37,7 +37,7 @@ namespace ConsoleRPG
                     health = 90;
                     attack = 140;
                     speed = 80;
-                    moveset[0] = "None";
+                    moveset[0] = "Firebolt";
                     moveset[1] = "None";
                     moveset[2] = "None";
                     moveset[3] = "None";
@@ -54,7 +54,7 @@ namespace ConsoleRPG
                     health = 130;
                     attack = 120;
                     speed = 110;
-                    moveset[0] = "None";
+                    moveset[0] = "Piercing Arrow";
                     moveset[1] = "None";
                     moveset[2] = "None";
                     moveset[3] = "None";
@@ -87,7 +87,7 @@ namespace ConsoleRPG
                     health = 1000000;
                     attack = 1000000;
                     speed = 1000000;
-                    moveset[0] = "None";
+                    moveset[0] = "Punch";
                     moveset[1] = "None";
                     moveset[2] = "None";
                     moveset[3] = "None";
@@ -321,6 +321,8 @@ namespace ConsoleRPG
             System.Threading.Thread.Sleep(70);
             Console.WriteLine($" | Speed: {user.speed}");
             System.Threading.Thread.Sleep(70);
+            Console.WriteLine($" | Moveset: {user.moveset[0]}, {user.moveset[1]}, {user.moveset[2]}, {user.moveset[3]}, {user.moveset[4]}");
+            System.Threading.Thread.Sleep(70);
             Console.WriteLine($" | Balance: ${user.balance}");
             System.Threading.Thread.Sleep(70);
             Console.WriteLine($" | Critical Hit Chance: {user.critchance}%");
@@ -357,6 +359,8 @@ namespace ConsoleRPG
                     System.Threading.Thread.Sleep(70);
                     Console.WriteLine($" | Speed: {user.speed}");
                     System.Threading.Thread.Sleep(70);
+                    Console.WriteLine($" | Moveset: {user.moveset[0]}, {user.moveset[1]}, {user.moveset[2]}, {user.moveset[3]}, {user.moveset[4]}");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($" | Balance: ${user.balance}");
                     System.Threading.Thread.Sleep(70);
                     Console.WriteLine($" | Critical Hit Chance: {user.critchance}%");
@@ -385,7 +389,7 @@ namespace ConsoleRPG
                 {
                     user.currentXp -= user.targetXp;
                     user.level++;
-                    user.targetXp += user.targetXp / 10;
+                    user.targetXp += user.targetXp / 10; // increments target by 10% of the previous level's target
                     Console.Write("LEVEL UP!");
                     Console.Write($"\nYou are now level {user.level}!\n");
                 }
@@ -409,8 +413,10 @@ namespace ConsoleRPG
                 int phealth = user.health;
                 int eohealth = enemy.health;
                 int xpGained;
+                int moneyGained;
+                bool inFight = true;
 
-                while (phealth > 0 && enemy.health > 0)
+                while (phealth > 0 && enemy.health > 0 && inFight)
                 {
                     Console.WriteLine($"\nWhat will you do?");
                     Console.WriteLine($"Your Moves:\n");
@@ -423,14 +429,48 @@ namespace ConsoleRPG
 
                     switch (move)
                     {
-                        case "Punch": case "punch":
-                            if (user.speed >= enemy.speed)
+                        case "Firebolt": case "firebolt": case "FireBolt": case "fireBolt":
+                            move = "Firebolt";
+                            if (user.moveset.Contains(move))
                             {
-                                Random rnd = new Random();
-                                enemy.health -= user.attack / 4;
-                                Console.WriteLine($"Your {move} did {user.attack / 4} damage! The {enemy.name} now has {enemy.health} health.");
-                                if (enemy.health > 0)
+                                if (user.speed >= enemy.speed)
                                 {
+                                    Random rnd = new Random();
+                                    enemy.health -= user.attack / 4; // 25%
+                                    if (enemy.health > 0)
+                                    {
+                                        Console.WriteLine($"Your {move} did {user.attack / 4} damage! The {enemy.name} now has {enemy.health} health.");
+                                        string enemymove = enemy.moveset[user.level - 1, rnd.Next(0, 2)];
+                                        switch (enemymove)
+                                        {
+                                            case "Scratch":
+                                                phealth -= enemy.attack / 5;
+                                                Console.WriteLine($"The {enemy.name} used {enemymove}, dealing {enemy.attack / 5} damage! You now have {phealth} health.");
+                                                break;
+                                            case "Small Heal":
+                                                int healthchange = enemy.health / 5;
+                                                enemy.health += healthchange;
+                                                Console.WriteLine($"The {enemy.name} used {enemymove}, healing by {healthchange}. They now have {enemy.health} health.");
+                                                break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"Your {move} did {user.attack / 4} damage! The {enemy.name} was defeated!");
+                                        xpGained = eohealth / 3;
+                                        moneyGained = (eohealth / 10) * 3;
+                                        user.balance += moneyGained;
+                                        Console.WriteLine($"Congratulations! You gained {xpGained} XP and ${moneyGained}! You now have ${user.balance}.");
+                                        addXp(xpGained);
+                                    }
+                                    if (phealth <= 0)
+                                    {
+                                        Console.WriteLine($"You Died! Returning home...");
+                                    }
+                                }
+                                else
+                                {
+                                    Random rnd = new Random();
                                     string enemymove = enemy.moveset[user.level - 1, rnd.Next(0, 2)];
                                     switch (enemymove)
                                     {
@@ -444,51 +484,254 @@ namespace ConsoleRPG
                                             Console.WriteLine($"The {enemy.name} used {enemymove}, healing by {healthchange}. They now have {enemy.health} health.");
                                             break;
                                     }
-                                }
-                                else
-                                {
-                                    Console.WriteLine($"Congratulations! You beat the {enemy.name}!");
-                                    xpGained = eohealth / 3;
-                                    Console.WriteLine($"You gained {xpGained} XP!");
-                                    addXp(xpGained);
-                                }
-                                if (phealth <= 0)
-                                {
-                                    Console.WriteLine($"You Died! Returning home...");
+                                    if (phealth <= 0)
+                                    {
+                                        Console.WriteLine($"You Died! Returning home...");
+                                    }
+                                    else
+                                    {
+                                        enemy.health -= user.attack / 4; // 25%
+                                    }
+                                    if (enemy.health <= 0)
+                                    {
+                                        Console.WriteLine($"Your {move} did {user.attack / 4} damage! The {enemy.name} was defeated!");
+                                        xpGained = eohealth / 3;
+                                        moneyGained = (eohealth / 10) * 3;
+                                        user.balance += moneyGained;
+                                        Console.WriteLine($"Congratulations! You gained {xpGained} XP and ${moneyGained}! You now have ${user.balance}.");
+                                        addXp(xpGained);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"Your {move} did {user.attack / 4} damage! The {enemy.name} now has {enemy.health} health.");
+                                    }
                                 }
                             }
-                            else
+                            break;
+                        
+                        case "Piercing Arrow": case "piercing arrow": case "Piercing arrow": case "piercing Arrow":
+                            move = "Piercing Arrow";
+                            if (user.moveset.Contains(move))
                             {
-                                Random rnd = new Random();
-                                string enemymove = enemy.moveset[user.level - 1, rnd.Next(0, 2)];
-                                switch (enemymove)
+                                if (user.speed >= enemy.speed)
                                 {
-                                    case "Scratch":
-                                        phealth -= enemy.attack / 5;
-                                        Console.WriteLine($"The {enemy.name} used {enemymove}, dealing {enemy.attack / 5} damage! You now have {phealth} health.");
-                                        break;
-                                    case "Small Heal":
-                                        int healthchange = enemy.health / 5;
-                                        enemy.health += healthchange;
-                                        Console.WriteLine($"The {enemy.name} used {enemymove}, healing by {healthchange}. They now have {enemy.health} health.");
-                                        break;
-                                }
-                                if (phealth <= 0)
-                                {
-                                    Console.WriteLine($"You Died! Returning home...");
+                                    Random rnd = new Random();
+                                    enemy.health -= user.attack / 4; // 25%
+                                    if (enemy.health > 0)
+                                    {
+                                        Console.WriteLine($"Your {move} did {user.attack / 4} damage! The {enemy.name} now has {enemy.health} health.");
+                                        string enemymove = enemy.moveset[user.level - 1, rnd.Next(0, 2)];
+                                        switch (enemymove)
+                                        {
+                                            case "Scratch":
+                                                phealth -= enemy.attack / 5;
+                                                Console.WriteLine($"The {enemy.name} used {enemymove}, dealing {enemy.attack / 5} damage! You now have {phealth} health.");
+                                                break;
+                                            case "Small Heal":
+                                                int healthchange = enemy.health / 5;
+                                                enemy.health += healthchange;
+                                                Console.WriteLine($"The {enemy.name} used {enemymove}, healing by {healthchange}. They now have {enemy.health} health.");
+                                                break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"Your {move} did {user.attack / 4} damage! The {enemy.name} was defeated!");
+                                        xpGained = eohealth / 3;
+                                        moneyGained = (eohealth / 10) * 3;
+                                        user.balance += moneyGained;
+                                        Console.WriteLine($"Congratulations! You gained {xpGained} XP and ${moneyGained}! You now have ${user.balance}.");
+                                        addXp(xpGained);
+                                    }
+                                    if (phealth <= 0)
+                                    {
+                                        Console.WriteLine($"You Died! Returning home...");
+                                    }
                                 }
                                 else
                                 {
-                                    enemy.health -= user.attack / 4;
-                                    Console.WriteLine($"Your {move} did {user.attack / 4} damage! The {enemy.name} now has {enemy.health} health.");
-                                    phealth -= 10;
+                                    Random rnd = new Random();
+                                    string enemymove = enemy.moveset[user.level - 1, rnd.Next(0, 2)];
+                                    switch (enemymove)
+                                    {
+                                        case "Scratch":
+                                            phealth -= enemy.attack / 5;
+                                            Console.WriteLine($"The {enemy.name} used {enemymove}, dealing {enemy.attack / 5} damage! You now have {phealth} health.");
+                                            break;
+                                        case "Small Heal":
+                                            int healthchange = enemy.health / 5;
+                                            enemy.health += healthchange;
+                                            Console.WriteLine($"The {enemy.name} used {enemymove}, healing by {healthchange}. They now have {enemy.health} health.");
+                                            break;
+                                    }
+                                    if (phealth <= 0)
+                                    {
+                                        Console.WriteLine($"You Died! Returning home...");
+                                    }
+                                    else
+                                    {
+                                        enemy.health -= user.attack / 4; // 25%
+                                    }
+                                    if (enemy.health <= 0)
+                                    {
+                                        Console.WriteLine($"Your {move} did {user.attack / 4} damage! The {enemy.name} was defeated!");
+                                        xpGained = eohealth / 3;
+                                        moneyGained = (eohealth / 10) * 3;
+                                        user.balance += moneyGained;
+                                        Console.WriteLine($"Congratulations! You gained {xpGained} XP and ${moneyGained}! You now have ${user.balance}.");
+                                        addXp(xpGained);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"Your {move} did {user.attack / 4} damage! The {enemy.name} now has {enemy.health} health.");
+                                    }
                                 }
-                                if (enemy.health <= 0)
+                            }
+                            break;
+                        case "Punch": case "punch":
+                            move = "Punch";
+                            if (user.moveset.Contains(move))
+                            {
+                                if (user.speed >= enemy.speed)
                                 {
-                                    Console.WriteLine($"Congratulations! You beat the {enemy.name}!");
-                                    xpGained = eohealth / 3;
-                                    Console.WriteLine($"You gained {xpGained} XP!");
-                                    addXp(xpGained);
+                                    Random rnd = new Random();
+                                    enemy.health -= user.attack / 4;
+                                    if (enemy.health > 0)
+                                    {
+                                        Console.WriteLine($"Your {move} did {user.attack / 4} damage! The {enemy.name} now has {enemy.health} health.");
+                                        string enemymove = enemy.moveset[user.level - 1, rnd.Next(0, 2)];
+                                        switch (enemymove)
+                                        {
+                                            case "Scratch":
+                                                phealth -= enemy.attack / 5;
+                                                Console.WriteLine($"The {enemy.name} used {enemymove}, dealing {enemy.attack / 5} damage! You now have {phealth} health.");
+                                                break;
+                                            case "Small Heal":
+                                                int healthchange = enemy.health / 5;
+                                                enemy.health += healthchange;
+                                                Console.WriteLine($"The {enemy.name} used {enemymove}, healing by {healthchange}. They now have {enemy.health} health.");
+                                                break;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"Your {move} did {user.attack / 4} damage! The {enemy.name} was defeated!");
+                                        xpGained = eohealth / 3;
+                                        moneyGained = (eohealth / 10) * 3;
+                                        user.balance += moneyGained;
+                                        Console.WriteLine($"Congratulations! You gained {xpGained} XP and ${moneyGained}! You now have ${user.balance}.");
+                                        addXp(xpGained);
+                                    }
+                                    if (phealth <= 0)
+                                    {
+                                        Console.WriteLine($"You Died! Returning home...");
+                                    }
+                                }
+                                else
+                                {
+                                    Random rnd = new Random();
+                                    string enemymove = enemy.moveset[user.level - 1, rnd.Next(0, 2)];
+                                    switch (enemymove)
+                                    {
+                                        case "Scratch":
+                                            phealth -= enemy.attack / 5;
+                                            Console.WriteLine($"The {enemy.name} used {enemymove}, dealing {enemy.attack / 5} damage! You now have {phealth} health.");
+                                            break;
+                                        case "Small Heal":
+                                            int healthchange = enemy.health / 5;
+                                            enemy.health += healthchange;
+                                            Console.WriteLine($"The {enemy.name} used {enemymove}, healing by {healthchange}. They now have {enemy.health} health.");
+                                            break;
+                                    }
+                                    if (phealth <= 0)
+                                    {
+                                        Console.WriteLine($"You Died! Returning home...");
+                                    }
+                                    else
+                                    {
+                                        enemy.health -= user.attack / 4;
+                                    }
+                                    if (enemy.health <= 0)
+                                    {
+                                        Console.WriteLine($"Your {move} did {user.attack / 4} damage! The {enemy.name} was defeated!");
+                                        xpGained = eohealth / 3;
+                                        moneyGained = (eohealth / 10) * 3;
+                                        user.balance += moneyGained;
+                                        Console.WriteLine($"Congratulations! You gained {xpGained} XP and ${moneyGained}! You now have ${user.balance}.");
+                                        addXp(xpGained);
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"Your {move} did {user.attack / 4} damage! The {enemy.name} now has {enemy.health} health.");
+                                    }
+                                }
+                            }
+                            break;
+                        case "Run": case "run":
+                            move = "Run";
+                            if (user.moveset.Contains(move))
+                            {
+                                Random rnd = new Random();
+                                double chance = rnd.Next(1, 101);
+                                if (chance <= 10) // 75% chance of getting away
+                                {
+                                    Console.WriteLine($"You used {move}, and got away!");
+                                    inFight = false;
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"You used {move}, but it was not successful!");
+                                    string enemymove = enemy.moveset[user.level - 1, rnd.Next(0, 2)];
+                                    switch (enemymove)
+                                    {
+                                        case "Scratch":
+                                            phealth -= enemy.attack / 5;
+                                            Console.WriteLine($"The {enemy.name} used {enemymove}, dealing {enemy.attack / 5} damage! You now have {phealth} health.");
+                                            break;
+                                        case "Small Heal":
+                                            int healthchange = enemy.health / 5;
+                                            enemy.health += healthchange;
+                                            Console.WriteLine($"The {enemy.name} used {enemymove}, healing by {healthchange}. They now have {enemy.health} health.");
+                                            break;
+                                    }
+                                    if (phealth <= 0)
+                                    {
+                                        Console.WriteLine($"You Died! Returning home...");
+                                    }
+                                }
+                            }
+                            break;
+                        case "Fly": case "fly":
+                            move = "Fly";
+                            if (user.moveset.Contains(move))
+                            {
+                                Random rnd = new Random();
+                                double chance = rnd.Next(1, 101);
+                                if (chance <= 90) // 90% chance of getting away
+                                {
+                                    Console.WriteLine($"You used {move}, and got away!");
+                                    inFight = false;
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"You used {move}, but it was not successful!");
+                                    string enemymove = enemy.moveset[user.level - 1, rnd.Next(0, 2)];
+                                    switch (enemymove)
+                                    {
+                                        case "Scratch":
+                                            phealth -= enemy.attack / 5;
+                                            Console.WriteLine($"The {enemy.name} used {enemymove}, dealing {enemy.attack / 5} damage! You now have {phealth} health.");
+                                            break;
+                                        case "Small Heal":
+                                            int healthchange = enemy.health / 5;
+                                            enemy.health += healthchange;
+                                            Console.WriteLine($"The {enemy.name} used {enemymove}, healing by {healthchange}. They now have {enemy.health} health.");
+                                            break;
+                                    }
+                                    if (phealth <= 0)
+                                    {
+                                        Console.WriteLine($"You Died! Returning home...");
+                                    }
                                 }
                             }
                             break;
@@ -497,12 +740,6 @@ namespace ConsoleRPG
                 enemy = null;
                 home = true;
             }
-
-
-
-
-
-            while (Console.ReadKey().Key != ConsoleKey.Escape) ; // Closes the application on Escape key pressed
         }
     }
 }
