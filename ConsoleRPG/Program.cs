@@ -154,6 +154,60 @@ namespace ConsoleRPG
             
         }
     }
+
+    class Shop
+    {
+        public string[] moves = new string[5];
+
+        public Shop(int ulevel, string[] moveset)
+        {
+            switch (ulevel)
+            {
+                case 1:
+                    if(!moveset.Contains("Kick"))
+                    {
+                        moves[0] = "Kick";
+                    }
+                    else
+                    {
+                        moves[0] = "Kick (Already using)";
+                    }
+                    if (!moveset.Contains("Push"))
+                    {
+                        moves[1] = "Push";
+                    }
+                    else
+                    {
+                        moves[1] = "Push (Already using)";
+                    }
+                    if (!moveset.Contains("Small Heal"))
+                    {
+                        moves[2] = "Small Heal";
+                    }
+                    else
+                    {
+                        moves[2] = "Small Heal (Already using)";
+                    }
+                    if (!moveset.Contains("Attack Boost"))
+                    {
+                        moves[3] = "Attack Boost";
+                    }
+                    else
+                    {
+                        moves[3] = "Attack Boost (Already using)";
+                    }
+                    if (!moveset.Contains("Fly"))
+                    {
+                        moves[4] = "Fly";
+                    }
+                    else
+                    {
+                        moves[4] = "Fly (Already using)";
+                    }
+                    break;
+            }
+        }
+    }
     class Program
     {
         
@@ -306,8 +360,7 @@ namespace ConsoleRPG
 
             Player user = new Player(uname, ustyle); // Creates a new player.
 
-            Console.WriteLine($"\n\nYou are a {user.style} named {user.name}.");
-            Console.WriteLine($"\n\n | {user.name}'s Stats");
+            Console.WriteLine($"\n | {user.name}'s Stats");
             System.Threading.Thread.Sleep(70);
             Console.WriteLine($" | Style: {user.style}");
             System.Threading.Thread.Sleep(70);
@@ -340,12 +393,13 @@ namespace ConsoleRPG
                     Console.WriteLine("List of commands:\n\n" +
                         "help - shows this list\n" +
                         "stats - shows the current player's stats\n" +
-                        "play - starts the game\n");
+                        "play - starts the game\n" +
+                        "shop - opens the shop\n");
                 }
 
                 else if (userInput == "stats")
                 {
-                    Console.WriteLine($"\n\n | {user.name}'s Stats");
+                    Console.WriteLine($"\n | {user.name}'s Stats");
                     System.Threading.Thread.Sleep(70);
                     Console.WriteLine($" | Style: {user.style}");
                     System.Threading.Thread.Sleep(70);
@@ -372,6 +426,12 @@ namespace ConsoleRPG
                 {
                     home = false;
                     play();
+                }
+
+                else if (userInput == "shop")
+                {
+                    home = false;
+                    shop();
                 }
 
                 else
@@ -739,6 +799,30 @@ namespace ConsoleRPG
                 }
                 enemy = null;
                 home = true;
+            }
+
+            void shop()
+            {
+                Console.WriteLine($"\nWelcome to the shop {user.name}.");
+                Shop playershop = new Shop(user.level, user.moveset);
+
+                while (!home)
+                {
+                    Console.WriteLine($" | Products:");
+                    Console.WriteLine($" | 1. {playershop.moves[0]}");
+                    Console.WriteLine($" | 2. {playershop.moves[1]}");
+                    Console.WriteLine($" | 3. {playershop.moves[2]}");
+                    Console.WriteLine($" | 4. {playershop.moves[3]}");
+
+                    string shopinput = Console.ReadLine();
+
+                    switch (shopinput)
+                    {
+                        case "close":
+                            home = true;
+                            break;
+                    }
+                }
             }
         }
     }
