@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using Newtonsoft.Json;
 
 namespace ConsoleRPG
 {
@@ -211,83 +213,147 @@ namespace ConsoleRPG
         
         static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to console RPG!\n\n");
-
-            Console.WriteLine("Hello! I am game-master Jerry! Nice to meet you... uh, what should I call you?\n");
-            string uname = Console.ReadLine();
-
             bool home = false;
+            string jsonplayer;
+            Player user;
+            Console.WriteLine("Welcome to console RPG!\n");
 
-            Console.WriteLine("\nIn this world, there are many dangers. How will you fight?\n");
 
-            Console.WriteLine("Please choose your fighting style:\n");
-
-            Console.WriteLine("1. Mage \n2. Hunter \n3. Rogue \n\nType 'choose' followed by the number corresponding to the style you would like to choose.\nEnter just the number corresponding to the style to find out more.\n");
-
-            string tempinput = Console.ReadLine();
-
-            string confirmation;
-
-            string ustyle = "none";
-            
-            while (ustyle == "none")
+            if (File.Exists(@"player.json"))
             {
-                if (tempinput == "1")
+                jsonplayer = File.ReadAllText(@"player.json");
+                user = JsonConvert.DeserializeObject<Player>(jsonplayer);
+                Console.WriteLine($"Found player data for {user.name}");
+            }
+            else
+            {
+                Console.WriteLine("Hello! I am game-master Jerry! Nice to meet you... uh, what should I call you?\n");
+                string uname = Console.ReadLine();
+                Console.WriteLine("\nIn this world, there are many dangers. How will you fight?\n");
+
+                Console.WriteLine("Please choose your fighting style:\n");
+
+                Console.WriteLine("1. Mage \n2. Hunter \n3. Rogue \n\nType 'choose' followed by the number corresponding to the style you would like to choose.\nEnter just the number corresponding to the style to find out more.\n");
+
+                string tempinput = Console.ReadLine();
+
+                string confirmation;
+
+                string ustyle = "none";
+
+                while (ustyle == "none")
                 {
-                    Console.Write("\nA magic using hero with average health and low defence. This hero deals immense damage without needing the speed which other heroes may possess.\n");
-                    Console.Write("\nBack(b)");
-                    confirmation = Console.ReadLine();
-                    if (confirmation == "b")
+                    if (tempinput == "1")
                     {
-                        Console.WriteLine("\nIn this world, there are many dangers. How will you fight?\n");
+                        Console.Write("\nA magic using hero with average health and low defence. This hero deals immense damage without needing the speed which other heroes may possess.\n");
+                        Console.Write("\nBack(b)");
+                        confirmation = Console.ReadLine();
+                        if (confirmation == "b")
+                        {
+                            Console.WriteLine("\nIn this world, there are many dangers. How will you fight?\n");
 
-                        Console.WriteLine("Please choose your fighting style:\n");
+                            Console.WriteLine("Please choose your fighting style:\n");
 
-                        Console.WriteLine("1. Mage \n2. Hunter \n3. Rogue \n\nType 'choose' followed by the number corresponding to the style you would like to choose.\nEnter the number corresponding to the style to find out more\n");
+                            Console.WriteLine("1. Mage \n2. Hunter \n3. Rogue \n\nType 'choose' followed by the number corresponding to the style you would like to choose.\nEnter the number corresponding to the style to find out more\n");
 
-                        tempinput = Console.ReadLine();
+                            tempinput = Console.ReadLine();
+                        }
                     }
-                }
-                else if (tempinput == "2")
-                {
-                    Console.Write("\nA moderately fast moving hero who seeks long range attacks due to their low chance of evading attacks. This hero has a large health advantage over the others, this allows them to take risks despite their low evasion chance.\n");
-                    Console.Write("\nBack(b)");
-                    confirmation = Console.ReadLine();
-                    if (confirmation == "b")
+                    else if (tempinput == "2")
                     {
-                        Console.WriteLine("\nIn this world, there are many dangers. How will you fight?\n");
+                        Console.Write("\nA moderately fast moving hero who seeks long range attacks due to their low chance of evading attacks. This hero has a large health advantage over the others, this allows them to take risks despite their low evasion chance.\n");
+                        Console.Write("\nBack(b)");
+                        confirmation = Console.ReadLine();
+                        if (confirmation == "b")
+                        {
+                            Console.WriteLine("\nIn this world, there are many dangers. How will you fight?\n");
 
-                        Console.WriteLine("Please choose your fighting style:\n");
+                            Console.WriteLine("Please choose your fighting style:\n");
 
-                        Console.WriteLine("1. Mage \n2. Hunter \n3. Rogue \n\nType 'choose' followed by the number corresponding to the style you would like to choose.\nEnter the number corresponding to the style to find out more\n");
+                            Console.WriteLine("1. Mage \n2. Hunter \n3. Rogue \n\nType 'choose' followed by the number corresponding to the style you would like to choose.\nEnter the number corresponding to the style to find out more\n");
 
-                        tempinput = Console.ReadLine();
+                            tempinput = Console.ReadLine();
+                        }
                     }
-                }
-                else if (tempinput == "3")
-                {
-                    Console.Write("\nAn agile and strong attacker with light armour and low health. This hero throws themselves into battle, due to their high chance of getting a critical hit on their enemy.\n");
-                    Console.Write("\nBack(b)");
-                    confirmation = Console.ReadLine();
-                    if (confirmation == "b")
+                    else if (tempinput == "3")
                     {
-                        Console.WriteLine("\nIn this world, there are many dangers. How will you fight?\n");
+                        Console.Write("\nAn agile and strong attacker with light armour and low health. This hero throws themselves into battle, due to their high chance of getting a critical hit on their enemy.\n");
+                        Console.Write("\nBack(b)");
+                        confirmation = Console.ReadLine();
+                        if (confirmation == "b")
+                        {
+                            Console.WriteLine("\nIn this world, there are many dangers. How will you fight?\n");
 
-                        Console.WriteLine("Please choose your fighting style:\n");
+                            Console.WriteLine("Please choose your fighting style:\n");
 
-                        Console.WriteLine("1. Mage \n2. Hunter \n3. Rogue \n\nType 'choose' followed by the number corresponding to the style you would like to choose.\nEnter the number corresponding to the style to find out more\n");
+                            Console.WriteLine("1. Mage \n2. Hunter \n3. Rogue \n\nType 'choose' followed by the number corresponding to the style you would like to choose.\nEnter the number corresponding to the style to find out more\n");
 
-                        tempinput = Console.ReadLine();
+                            tempinput = Console.ReadLine();
+                        }
                     }
-                }
-                else if (tempinput == "choose 1")
-                {
-                    Console.Write("\nSo you would like to be a Mage?");
-                    Console.Write("\nYes(y) / No(n)\n");
-                    confirmation = Console.ReadLine();
-                    if (confirmation == "y")
+                    else if (tempinput == "choose 1")
                     {
-                        ustyle = "Mage";
+                        Console.Write("\nSo you would like to be a Mage?");
+                        Console.Write("\nYes(y) / No(n)\n");
+                        confirmation = Console.ReadLine();
+                        if (confirmation == "y")
+                        {
+                            ustyle = "Mage";
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nIn this world, there are many dangers. How will you fight?\n");
+
+                            Console.WriteLine("Please choose your fighting style:\n");
+
+                            Console.WriteLine("1. Mage \n2. Hunter \n3. Rogue \n\nType 'choose' followed by the number corresponding to the style you would like to choose.\nEnter the number corresponding to the style to find out more\n");
+
+                            tempinput = Console.ReadLine();
+                        }
+                    }
+                    else if (tempinput == "choose 2")
+                    {
+                        Console.Write("\nSo you would like to be a Hunter?");
+                        Console.Write("\nYes(y) / No(n)\n");
+                        confirmation = Console.ReadLine();
+                        if (confirmation == "y")
+                        {
+                            ustyle = "Hunter";
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nIn this world, there are many dangers. How will you fight?\n");
+
+                            Console.WriteLine("Please choose your fighting style:\n");
+
+                            Console.WriteLine("1. Mage \n2. Hunter \n3. Rogue \n\nType 'choose' followed by the number corresponding to the style you would like to choose.\nEnter the number corresponding to the style to find out more\n");
+
+                            tempinput = Console.ReadLine();
+                        }
+                    }
+                    else if (tempinput == "choose 3")
+                    {
+                        Console.Write("\nSo you would like to be a Rogue?");
+                        Console.Write("\nYes(y) / No(n)\n");
+                        confirmation = Console.ReadLine();
+                        if (confirmation == "y")
+                        {
+                            ustyle = "Rogue";
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nIn this world, there are many dangers. How will you fight?\n");
+
+                            Console.WriteLine("Please choose your fighting style:\n");
+
+                            Console.WriteLine("1. Mage \n2. Hunter \n3. Rogue \n\nType 'choose' followed by the number corresponding to the style you would like to choose.\nEnter the number corresponding to the style to find out more\n");
+
+                            tempinput = Console.ReadLine();
+                        }
+                    }
+                    else if (tempinput == "Admin")
+                    {
+                        ustyle = "Admin";
                     }
                     else
                     {
@@ -300,63 +366,17 @@ namespace ConsoleRPG
                         tempinput = Console.ReadLine();
                     }
                 }
-                else if (tempinput == "choose 2")
-                {
-                    Console.Write("\nSo you would like to be a Hunter?");
-                    Console.Write("\nYes(y) / No(n)\n");
-                    confirmation = Console.ReadLine();
-                    if (confirmation == "y")
-                    {
-                        ustyle = "Hunter";
-                    }
-                    else
-                    {
-                        Console.WriteLine("\nIn this world, there are many dangers. How will you fight?\n");
 
-                        Console.WriteLine("Please choose your fighting style:\n");
+                user = new Player(uname, ustyle); // Creates a new player.
 
-                        Console.WriteLine("1. Mage \n2. Hunter \n3. Rogue \n\nType 'choose' followed by the number corresponding to the style you would like to choose.\nEnter the number corresponding to the style to find out more\n");
-
-                        tempinput = Console.ReadLine();
-                    }
-                }
-                else if (tempinput == "choose 3")
-                {
-                    Console.Write("\nSo you would like to be a Rogue?");
-                    Console.Write("\nYes(y) / No(n)\n");
-                    confirmation = Console.ReadLine();
-                    if (confirmation == "y")
-                    {
-                        ustyle = "Rogue";
-                    }
-                    else
-                    {
-                        Console.WriteLine("\nIn this world, there are many dangers. How will you fight?\n");
-
-                        Console.WriteLine("Please choose your fighting style:\n");
-
-                        Console.WriteLine("1. Mage \n2. Hunter \n3. Rogue \n\nType 'choose' followed by the number corresponding to the style you would like to choose.\nEnter the number corresponding to the style to find out more\n");
-
-                        tempinput = Console.ReadLine();
-                    }
-                }
-                else if (tempinput == "Admin")
-                {
-                    ustyle = "Admin";
-                }
-                else
-                {
-                    Console.WriteLine("\nIn this world, there are many dangers. How will you fight?\n");
-
-                    Console.WriteLine("Please choose your fighting style:\n");
-
-                    Console.WriteLine("1. Mage \n2. Hunter \n3. Rogue \n\nType 'choose' followed by the number corresponding to the style you would like to choose.\nEnter the number corresponding to the style to find out more\n");
-
-                    tempinput = Console.ReadLine();
-                }
+                save();
             }
 
-            Player user = new Player(uname, ustyle); // Creates a new player.
+            
+
+            
+
+            
 
             Console.WriteLine($"\n | {user.name}'s Stats");
             System.Threading.Thread.Sleep(70);
@@ -463,10 +483,15 @@ namespace ConsoleRPG
                 Console.WriteLine("Here is some information about it:\n");
                 System.Threading.Thread.Sleep(200);
                 Console.WriteLine($" | Name: {enemy.name}");
+                System.Threading.Thread.Sleep(70);
                 Console.WriteLine($" | Appearance: {enemy.app}");
+                System.Threading.Thread.Sleep(70);
                 Console.WriteLine($" | Health: {enemy.health}");
+                System.Threading.Thread.Sleep(70);
                 Console.WriteLine($" | Attack: {enemy.attack}");
+                System.Threading.Thread.Sleep(70);
                 Console.WriteLine($" | Speed: {enemy.speed}");
+                System.Threading.Thread.Sleep(70);
 
                 int phealth = user.health;
                 int eohealth = enemy.health;
@@ -477,17 +502,26 @@ namespace ConsoleRPG
                 while (phealth > 0 && enemy.health > 0 && inFight)
                 {
                     Console.WriteLine($"\nWhat will you do?");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($"Your Moves:\n");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($"{user.moveset[0]}");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($"{user.moveset[1]}");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($"{user.moveset[2]}");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($"{user.moveset[3]}");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($"{user.moveset[4]}\n");
-                    string move = Console.ReadLine();
+                    System.Threading.Thread.Sleep(70);
+                    Console.WriteLine($"Enter the number of a move to use it.");
+                    int moveint = System.Convert.ToInt32(Console.ReadLine());
+                    string move = user.moveset[moveint - 1];
 
                     switch (move)
                     {
-                        case "Firebolt": case "firebolt": case "FireBolt": case "fireBolt":
+                        case "Firebolt":
                             move = "Firebolt";
                             if (user.moveset.Contains(move))
                             {
@@ -567,7 +601,7 @@ namespace ConsoleRPG
                             }
                             break;
                         
-                        case "Piercing Arrow": case "piercing arrow": case "Piercing arrow": case "piercing Arrow":
+                        case "Piercing Arrow":
                             move = "Piercing Arrow";
                             if (user.moveset.Contains(move))
                             {
@@ -646,7 +680,8 @@ namespace ConsoleRPG
                                 }
                             }
                             break;
-                        case "Punch": case "punch":
+
+                        case "Punch":
                             move = "Punch";
                             if (user.moveset.Contains(move))
                             {
@@ -725,7 +760,8 @@ namespace ConsoleRPG
                                 }
                             }
                             break;
-                        case "Run": case "run":
+
+                        case "Run":
                             move = "Run";
                             if (user.moveset.Contains(move))
                             {
@@ -759,7 +795,8 @@ namespace ConsoleRPG
                                 }
                             }
                             break;
-                        case "Fly": case "fly":
+
+                        case "Fly":
                             move = "Fly";
                             if (user.moveset.Contains(move))
                             {
@@ -797,59 +834,94 @@ namespace ConsoleRPG
                 }
                 enemy = null;
                 home = true;
+                save();
             }
 
             void shop()
             {
                 Console.WriteLine($"\nWelcome to the shop, {user.name}.");
-
+                System.Threading.Thread.Sleep(70);
                 while (!home)
                 {
                     Shop playershop = new Shop(user.level, user.moveset);
+                    Console.WriteLine($"Your Balance: ${user.balance}");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($"\nProducts:");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($" | 1. {playershop.moves[0]} - ${playershop.movesprice[0]}");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($" | 2. {playershop.moves[1]} - ${playershop.movesprice[1]}");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($" | 3. {playershop.moves[2]} - ${playershop.movesprice[2]}");
+                    System.Threading.Thread.Sleep(70);
                     Console.WriteLine($" | 4. {playershop.moves[3]} - ${playershop.movesprice[3]}");
-
+                    System.Threading.Thread.Sleep(70);
+                    Console.WriteLine($"\nType 'help' to learn more\n");
                     string shopinput = Console.ReadLine();
 
                     switch (shopinput)
                     {
+                        case "help":
+                            Console.WriteLine($"\n | help - shows this list");
+                            System.Threading.Thread.Sleep(70);
+                            Console.WriteLine($" | close - takes you home");
+                            System.Threading.Thread.Sleep(70);
+                            Console.WriteLine($" | buy - moves you to the buy menu\n");
+                            System.Threading.Thread.Sleep(2000);
+                            break;
                         case "close":
                             home = true;
                             break;
                         case "buy":
                             Console.WriteLine($"\nEnter the number of the move you would like to buy.");
+                            System.Threading.Thread.Sleep(70);
                             int buyinput = System.Convert.ToInt32(Console.ReadLine());
 
                             if (user.balance >= playershop.movesprice[buyinput - 1])
                             {
                                 Console.WriteLine($"\nHere are your current moves:");
+                                System.Threading.Thread.Sleep(70);
                                 Console.WriteLine($" | 1. {user.moveset[0]}");
+                                System.Threading.Thread.Sleep(70);
                                 Console.WriteLine($" | 2. {user.moveset[1]}");
+                                System.Threading.Thread.Sleep(70);
                                 Console.WriteLine($" | 3. {user.moveset[2]}");
+                                System.Threading.Thread.Sleep(70);
                                 Console.WriteLine($" | 4. {user.moveset[3]}");
+                                System.Threading.Thread.Sleep(70);
                                 Console.WriteLine($"\nEnter the number of the move you would like to replace with {playershop.moves[buyinput - 1]}.");
                                 int buyreplaceinput = System.Convert.ToInt32(Console.ReadLine());
 
                                 Console.WriteLine($"\nYou replaced {user.moveset[buyreplaceinput - 1]} with {playershop.moves[buyinput - 1]}.");
                                 user.moveset[buyreplaceinput - 1] = playershop.moves[buyinput - 1];
+                                user.balance -= playershop.movesprice[buyinput - 1];
                                 Console.WriteLine($"\nHere are your new moves:\n");
+                                System.Threading.Thread.Sleep(70);
                                 Console.WriteLine($" | 1. {user.moveset[0]}");
+                                System.Threading.Thread.Sleep(70);
                                 Console.WriteLine($" | 2. {user.moveset[1]}");
+                                System.Threading.Thread.Sleep(70);
                                 Console.WriteLine($" | 3. {user.moveset[2]}");
+                                System.Threading.Thread.Sleep(70);
                                 Console.WriteLine($" | 4. {user.moveset[3]}");
-                                System.Threading.Thread.Sleep(800);
+                                System.Threading.Thread.Sleep(70);
+                                System.Threading.Thread.Sleep(2000);
                             }
                             else
                             {
                                 Console.WriteLine($"You can't afford {playershop.moves[buyinput - 1]}, you need ${user.balance - playershop.movesprice[buyinput - 1]} more.");
-                                System.Threading.Thread.Sleep(800);
+                                System.Threading.Thread.Sleep(2000);
                             }
                             break;
                     }
                 }
+                save();
+            }
+
+            void save()
+            {
+                string tempuserinfo = JsonConvert.SerializeObject(user);
+                File.WriteAllText(@"player.json", tempuserinfo);
             }
         }
     }
