@@ -126,8 +126,16 @@ namespace ConsoleRPG
         public Enemy(int plevel)
         {
             Random rnd = new Random();
-            name = enemynames[plevel - 1, rnd.Next(0, 2)];
-            app = enemyapps[plevel - 1, rnd.Next(0, 2)];
+            if (plevel > 2)
+            {
+                name = enemynames[rnd.Next(0, 2), rnd.Next(0, 2)];
+                app = enemyapps[rnd.Next(0, 2), rnd.Next(0, 2)];
+            }
+            else
+            {
+                name = enemynames[plevel - 1, rnd.Next(0, 2)];
+                app = enemyapps[plevel - 1, rnd.Next(0, 2)];
+            }
 
             switch (name)
             {
@@ -372,12 +380,6 @@ namespace ConsoleRPG
                 save();
             }
 
-            
-
-            
-
-            
-
             Console.WriteLine($"\n | {user.name}'s Stats");
             System.Threading.Thread.Sleep(70);
             Console.WriteLine($" | Style: {user.style}");
@@ -505,15 +507,15 @@ namespace ConsoleRPG
                     System.Threading.Thread.Sleep(70);
                     Console.WriteLine($"Your Moves:\n");
                     System.Threading.Thread.Sleep(70);
-                    Console.WriteLine($"{user.moveset[0]}");
+                    Console.WriteLine($"1. {user.moveset[0]}");
                     System.Threading.Thread.Sleep(70);
-                    Console.WriteLine($"{user.moveset[1]}");
+                    Console.WriteLine($"2. {user.moveset[1]}");
                     System.Threading.Thread.Sleep(70);
-                    Console.WriteLine($"{user.moveset[2]}");
+                    Console.WriteLine($"3. {user.moveset[2]}");
                     System.Threading.Thread.Sleep(70);
-                    Console.WriteLine($"{user.moveset[3]}");
+                    Console.WriteLine($"4. {user.moveset[3]}");
                     System.Threading.Thread.Sleep(70);
-                    Console.WriteLine($"{user.moveset[4]}\n");
+                    Console.WriteLine($"5. {user.moveset[4]}\n");
                     System.Threading.Thread.Sleep(70);
                     Console.WriteLine($"Enter the number of a move to use it.");
                     int moveint = System.Convert.ToInt32(Console.ReadLine());
@@ -612,7 +614,16 @@ namespace ConsoleRPG
                                     if (enemy.health > 0)
                                     {
                                         Console.WriteLine($"Your {move} did {user.attack / 4} damage! The {enemy.name} now has {enemy.health} health.");
-                                        string enemymove = enemy.moveset[user.level - 1, rnd.Next(0, 2)];
+                                        string enemymove;
+                                        if (user.level > 2)
+                                        {
+                                            enemymove = enemy.moveset[rnd.Next(0, 2), rnd.Next(0, 2)];
+                                        }
+                                        else
+                                        {
+                                            enemymove = enemy.moveset[user.level - 1, rnd.Next(0, 2)];
+                                        }
+
                                         switch (enemymove)
                                         {
                                             case "Scratch":
@@ -692,7 +703,15 @@ namespace ConsoleRPG
                                     if (enemy.health > 0)
                                     {
                                         Console.WriteLine($"Your {move} did {user.attack / 4} damage! The {enemy.name} now has {enemy.health} health.");
-                                        string enemymove = enemy.moveset[user.level - 1, rnd.Next(0, 2)];
+                                        string enemymove;
+                                        if (user.level > 2)
+                                        {
+                                            enemymove = enemy.moveset[rnd.Next(0, 2), rnd.Next(0, 2)];
+                                        }
+                                        else
+                                        {
+                                            enemymove = enemy.moveset[user.level - 1, rnd.Next(0, 2)];
+                                        }
                                         switch (enemymove)
                                         {
                                             case "Scratch":
